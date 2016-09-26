@@ -1,0 +1,49 @@
+
+	//const
+	int BOARD_SIZE = 10;
+	int WHITE = 1;
+	int BLACK = -1;
+	int NONE = 1000;
+	int WALL = 999;
+	int L_WALL = 0;
+	int R_WALL = 9;
+	int SEARCH[8] = { -1, -11, -10, -9, +1, +11, +10, +9 };
+
+	//var
+	int BOARD[100];
+	int TurnPlayer;
+
+
+	osero_game(){
+		for (int k = 0; k < 100; k++){
+			BOARD[k] = NONE;
+			if (k == 44 || k == 55)  BOARD[k] = WHITE;
+			if (k == 45 || k == 54)  BOARD[k] = BLACK;
+			if (k <= 10 || k % 10 == 9 || k % 10 == 0 || k >= 90) BOARD[k] = WALL;
+		}
+	}
+
+	void show_board(){
+		for (int k = 0; k < 100; k++){
+			printf("%4d ", BOARD[k]);
+			if (k % 10 == 9) cout << endl;
+		}
+	}
+
+	bool put_stone(int position){
+		if (!check_rev(position)) return false;
+	}
+
+	bool check_rev(int position){
+		for (int k = 0; k < 8; k++){
+			int counter = 0;
+			while (1){
+				if (BOARD[position + SEARCH[k]] == TurnPlayer && counter == 0) break;
+				if (BOARD[position + SEARCH[k]] == WALL) break;
+				if (BOARD[position + SEARCH[k]] == TurnPlayer && counter != 0) return true;
+				if (BOARD[position + SEARCH[k]] == -TurnPlayer) continue;
+			}
+		}
+		return false;
+	}
+
